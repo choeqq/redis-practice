@@ -13,7 +13,7 @@ app.use(cors());
 
 app.get("/photos", async (req, res) => {
   const albumId = req.query.albumId;
-  redisClient.get("photos", async (error, photos) => {
+  redisClient.get(`photos?albumId=${albumId}`, async (error, photos) => {
     if (error) console.error(error);
     if (photos) {
       return res.json(JSON.parse(photos));
@@ -22,9 +22,9 @@ app.get("/photos", async (req, res) => {
         "https://jsonplaceholder.typicode.com/photos",
         { params: { albumId } }
       );
-      redisClient.setex("photos", DEFAULT_EXPIRATION, JSON.stringify(data));
+      redisClient.setEx("photos", DEFAULT_EXPIRATION, JSON.stringify(data));
+      res.json(data);
     }
-    res.json(data);
   });
 });
 
