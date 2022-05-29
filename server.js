@@ -1,8 +1,10 @@
 const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
+const Redis = require("redis");
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get("/photos", async (req, res) => {
